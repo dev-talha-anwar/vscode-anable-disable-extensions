@@ -5,9 +5,9 @@ This extension is inspired by the VS Code Feature Request [#40239](https://githu
 <!-- ![ext.config.json](https://raw.githubusercontent.com/muzaisimao/vscode-disable-extensions/main/images/ext-config.png) -->
 
 ## Install
- 1. Search in the VS Code extensions: `Enable/Disable Extensions`
+ 1. Search in the VS Code extensions: `Enable Extensions`
 
- 2. Visual Studio Code Market Place: [Enable/Disable Extensions](https://marketplace.visualstudio.com/items?itemName=TalhaAnwar.vscode-disable-extensions)
+ 2. Visual Studio Code Market Place: [Enable Extensions](https://marketplace.visualstudio.com/items?itemName=TalhaAnwar.vscode-enable-extensions)
 
 ---
 ## Features
@@ -75,7 +75,7 @@ This extension is inspired by the VS Code Feature Request [#40239](https://githu
 ---
 ## Issues
 
-Submit the [issues](https://github.com/dev-talha-anwar/vscode-enable-disable-extensions/issues) if you find any bug or have any suggestion.
+Submit the [issues](https://github.com/dev-talha-anwar/vscode-enable-extensions/issues) if you find any bug or have any suggestion.
 
 ---
 ## License

@@ -1,15 +1,15 @@
 {
-  "name": "vscode-enable-disable-extensions",
-  "displayName": "Enable/Disable Extensions",
-  "description": "Enable/Disable extensions from config file",
+  "name": "vscode-enable-extensions",
+  "displayName": "Enable Extensions",
+  "description": "Enable extensions from config file",
   "keywords": [
-    "disable",
+    "enable",
     "extension",
-    "disable extension",
-    "disable plugin"
+    "enable extension",
+    "enable plugin"
   ],
   "version": "0.1.7",
-  "repository": "https://github.com/dev-talha-anwar/vscode-enable-disable-extensions",
+  "repository": "https://github.com/dev-talha-anwar/vscode-enable-extensions",
   "icon": "resources/logo.png",
   "publisher": "TalhaAnwar",
   "engines": {

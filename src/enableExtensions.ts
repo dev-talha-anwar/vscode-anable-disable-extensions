@@ -22,10 +22,10 @@ function runDisableShell(cmd: string, cwd: string, configs: Configs) {
   }
 }
 
-async function disableExtensions(context: ExtensionContext) {
+async function enableExtensions(context: ExtensionContext) {
   const configs: Configs = await getConfigs(context);
-  if (configs.disabled.length === 0 && configs.enabled.length === 0) {
-    window.showInformationMessage("No extensions to enable/disable found in config file.");
+  if (configs.enabled.length === 0) {
+    window.showInformationMessage("No extensions to enable found in config file.");
     return;
   }
   const workspacePath = getWorkSpacePath();
@@ -88,11 +88,11 @@ async function disableExtensions(context: ExtensionContext) {
         runDisableShell(cmd, workspacePath, configs);
       }
     } else {
-      window.showInformationMessage("No extensions to enable/disable");
+      window.showInformationMessage("No extensions to enable");
       return;
     }
   }
 
 }
 
-export default disableExtensions;
+export default enableExtensions;

@@ -1,9 +1,9 @@
 import { ExtensionContext } from 'vscode';
-import disableExtensions from './disableExtensions';
+import enableExtensions from './enableExtensions';
 
 export function activate(context: ExtensionContext) {
-	console.log('"enable-disable-extensions" is now active!');
-  disableExtensions(context);
+	console.log('"enable-extensions" is now active!');
+  enableExtensions(context);
 }
 
 export function deactivate() {}
