@@ -1,12 +1,17 @@
 {
-  "name": "vscode-disable-extensions",
-  "displayName": "Disable Extensions",
-  "description": "Disable extensions from config file",
-	"keywords": [ "disable", "extension", "disable extension","disable plugin" ],
-  "version": "0.1.2",
-  "repository": "https://github.com/muzaisimao/vscode-disable-extensions",
+  "name": "vscode-enable-disable-extensions",
+  "displayName": "Enable/Disable Extensions",
+  "description": "Enable/Disable extensions from config file",
+  "keywords": [
+    "disable",
+    "extension",
+    "disable extension",
+    "disable plugin"
+  ],
+  "version": "0.1.6",
+  "repository": "https://github.com/dev-talha-anwar/vscode-enable-disable-extensions",
   "icon": "resources/logo.png",
-  "publisher": "muzaisimao",
+  "publisher": "TalhaAnwar",
   "engines": {
     "vscode": "^1.58.0"
   },
@@ -38,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^5.5.0",
     "@typescript-eslint/parser": "^5.5.0",
     "@vscode/test-electron": "^1.6.2",
+    "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.14.1",
     "eslint": "^8.3.0",
     "glob": "^7.2.0",

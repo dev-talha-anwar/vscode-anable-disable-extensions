@@ -24,8 +24,8 @@ function runDisableShell(cmd: string, cwd: string, configs: Configs) {
 
 async function disableExtensions(context: ExtensionContext) {
   const configs: Configs = await getConfigs(context);
-  if (configs.disabled.length === 0) {
-    window.showInformationMessage("No extensions to disable");
+  if (configs.disabled.length === 0 && configs.disabled.length === 0) {
+    window.showInformationMessage("No extensions to enable/disable");
     return;
   }
   const workspacePath = getWorkSpacePath();
@@ -50,8 +50,15 @@ async function disableExtensions(context: ExtensionContext) {
   }
 
   let cmd = configs.openInNewWindow === false ? "code --reuse-window" : "code --new-window";
-  cmd += " --disable-extension muzaisimao.vscode-disable-extensions"; // disable self
-  configs.disabled.forEach((id) => (cmd += ` --disable-extension ${id}`));
+  cmd += " --disable-extension TalhaAnwar.vscode-disable-extensions"; // disable self
+  
+  if(configs.disabled.length){
+    configs.disabled.forEach((id) => (cmd += ` --disable-extension ${id}`));
+  }
+  if(configs.enabled.length){
+    configs.enabled.forEach((id) => (cmd += ` --enable-proposed-api ${id}`));
+  }
+
   cmd += ` ${workspacePath}`;
 
   if (configs.autoReload === false) {
