@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, window, MessageItem, Uri } from "vscode";
+import { commands, ExtensionContext, window, MessageItem, Uri, extensions, workspace } from "vscode";
 import { exec, execSync } from "child_process";
 import { Configs } from "./types";
 import { getWorkSpacePath, getConfigs, isConfirm } from "./utils";
@@ -24,52 +24,75 @@ function runDisableShell(cmd: string, cwd: string, configs: Configs) {
 
 async function disableExtensions(context: ExtensionContext) {
   const configs: Configs = await getConfigs(context);
-  if (configs.disabled.length === 0 && configs.disabled.length === 0) {
-    window.showInformationMessage("No extensions to enable/disable");
+  if (configs.disabled.length === 0 && configs.enabled.length === 0) {
+    window.showInformationMessage("No extensions to enable/disable found in config file.");
     return;
   }
   const workspacePath = getWorkSpacePath();
-
+  let code = null;
   try {
     execSync("code -v", { cwd: workspacePath });
+    code = "code"
   } catch (error) {
     console.log("error :>> ", error);
-    interface MsgItem extends MessageItem {
-      value: "confirm";
+    try {
+      execSync("code-insiders -v", { cwd: workspacePath });
+      code = "code-insiders"
+    } catch (error) {
+      interface MsgItem extends MessageItem {
+        value: "confirm";
+      }
+      const result = await window.showErrorMessage<MsgItem>(
+        `'code' command is not recognized.`,
+        { title: "Learn more", value: "confirm" }
+      );
+
+      if (result?.value === "confirm") {
+        const url = "https://code.visualstudio.com/docs/editor/command-line#_common-questions";
+        commands.executeCommand("vscode.open", Uri.parse(url));
+      }
+      return;
     }
-    const result = await window.showErrorMessage<MsgItem>(
-      `'code' command is not recognized.`,
-      { title: "Learn more", value: "confirm" }
-    );
+  }
+  if (code) {
+    let cmd = configs.openInNewWindow === false ? `${code} --reuse-window` : `${code} --new-window`;
+    let disableCheck, enableCheck = false
+    const enabledExtensions = extensions.all.filter(extension => !extension.id.startsWith('vscode.'));
 
-    if (result?.value === "confirm") {
-      const url = "https://code.visualstudio.com/docs/editor/command-line#_common-questions";
-      commands.executeCommand("vscode.open", Uri.parse(url));
+
+    const extensionsToDisable = enabledExtensions.filter(a => !configs.enabled.includes(a.id));
+    extensionsToDisable.forEach((ext) => {
+      disableCheck = true
+      cmd += ` --disable-extension ${ext.id}`;
+    });
+    if (configs.enabled.length) {
+      configs.enabled.forEach((id) => {
+        const check = enabledExtensions.find(a => a.id == id);
+        if (!check) {
+          enableCheck = true
+          cmd += ` --enable-proposed-api=${id}`;
+        }
+      })
     }
-    return;
-  }
+    if (disableCheck || enableCheck) {
+      cmd += ` ${workspacePath}`;
+      if (configs.autoReload === false) {
+        const message = "Disable extensions and open new VS Code?";
+        const result = await isConfirm(message);
+        console.log(cmd, 'cmd');
 
-  let cmd = configs.openInNewWindow === false ? "code --reuse-window" : "code --new-window";
-  cmd += " --disable-extension TalhaAnwar.vscode-disable-extensions"; // disable self
-  
-  if(configs.disabled.length){
-    configs.disabled.forEach((id) => (cmd += ` --disable-extension ${id}`));
-  }
-  if(configs.enabled.length){
-    configs.enabled.forEach((id) => (cmd += ` --enable-proposed-api ${id}`));
-  }
-
-  cmd += ` ${workspacePath}`;
-
-  if (configs.autoReload === false) {
-    const message = "Disable extensions and open new VS Code?";
-    const result = await isConfirm(message);
-    if (result) {
-      runDisableShell(cmd, workspacePath, configs);
+        if (result) {
+          runDisableShell(cmd, workspacePath, configs);
+        }
+      } else {
+        runDisableShell(cmd, workspacePath, configs);
+      }
+    } else {
+      window.showInformationMessage("No extensions to enable/disable");
+      return;
     }
-  } else {
-    runDisableShell(cmd, workspacePath, configs);
   }
+
 }
 
 export default disableExtensions;
